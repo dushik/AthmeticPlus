@@ -21,4 +21,12 @@ public class StrPro {
 		String temp[]=string.split("\\=");
 		return temp[1];
 	}
+	/**
+	 * 分割字符串“-”前面的内容
+	 * @param string
+	 */
+	public String[] StrSplitScore(String string){
+		String temp[]=string.split("\\-");
+		return temp;
+	}
 }

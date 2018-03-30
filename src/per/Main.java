@@ -254,6 +254,7 @@ public class Main{
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
 		            	textArea.append("开始答题\n");
+		            	resHm.clear();ansHm.clear();
 		            	doFlag=true;
 		            	if(arithExpress.isEmpty()){
 		                    JOptionPane.showMessageDialog(
@@ -266,6 +267,15 @@ public class Main{
 		            	else{
 		            		index=0;
 		            		arithLabel.setText(strPro.StrSplitBefore(arithExpress.get(index)));
+//		                    try {    
+//		                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());    
+//		                    } catch (Exception ex) {    
+//		                        ex.printStackTrace();    
+//		                    }    
+//		                 
+//		                    CountDown cframe = new CountDown("计时器");    
+//		                    cframe.pack();    
+//		                    cframe.setVisible(true);    
 		            	}
 		            }
 		        });
@@ -278,7 +288,7 @@ public class Main{
 		                }
 		                else{
 			            	textArea.append("上一题\n");
-			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"结果："+textField.getText()+"\n");
+			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"="+textField.getText()+"\n");
 			                if(!textField.getText().equals("")||textField.getText()!=null){
 				                ansHm.put(index, strPro.StrSplitAfter(arithExpress.get(index)));
 				                resHm.put(index, textField.getText());
@@ -308,7 +318,7 @@ public class Main{
 		                }
 		                else{
 			                textArea.append("下一题\n");
-			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"结果："+textField.getText()+"\n");
+			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"="+textField.getText()+"\n");
 			                if(!textField.getText().equals("")||textField.getText()!=null){
 				                ansHm.put(index, strPro.StrSplitAfter(arithExpress.get(index)));
 				                resHm.put(index, textField.getText());
@@ -338,8 +348,7 @@ public class Main{
 		                    JOptionPane.showMessageDialog(frame,"请点击开始答题按钮，进行测试！","消息标题",JOptionPane.WARNING_MESSAGE);
 		                }
 		                else{
-			            	textArea.append("确定答案\n");
-			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"结果："+textField.getText()+"\n");
+			                textArea.append("算式："+strPro.StrSplitBefore(arithExpress.get(index))+"="+textField.getText()+"\n");
 			                if(!textField.getText().equals("")||textField.getText()!=null){
 				                ansHm.put(index, strPro.StrSplitAfter(arithExpress.get(index)));
 				                resHm.put(index, textField.getText());
@@ -366,14 +375,17 @@ public class Main{
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
 		            	if(!resHm.isEmpty()||!ansHm.isEmpty()){
+			                textArea.append("已提交答案\n");
+			                textField.setText("");
+			                arithLabel.setText("点击开始答题按钮,开始答题");
 		            		doFlag=false;
-			                textArea.append("结束答题\n");
 			                index=0;
 			                ArrayList<Integer> temp=new ArrayList<Integer>();
 			                temp.add(critical(resHm,ansHm));
 			                temp.add(arithExpress.size());
 			                doFile.appendFile("./static.txt",temp);
 			                resHm.clear();ansHm.clear();
+			                //cframe.dispose();
 		            	}
 		            	else{
 		                    JOptionPane.showMessageDialog(frame,"你还没有答题，回答完成后请提交！","消息标题",JOptionPane.WARNING_MESSAGE);

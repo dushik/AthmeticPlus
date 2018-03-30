@@ -3,6 +3,9 @@ package per;
 
 import java.awt.Font;
  
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,6 +21,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class BarChart {
     ChartPanel frame1;
+    static StrPro strPro=new StrPro();
+    static DoFile doFile=new DoFile();
     public  BarChart(){
         CategoryDataset dataset = getDataSet();
         JFreeChart chart = ChartFactory.createBarChart3D(
@@ -44,29 +49,41 @@ public class BarChart {
           //到这里结束，虽然代码有点多，但只为一个目的，解决汉字乱码问题
            
          frame1=new ChartPanel(chart,true);        //这里也可以用chartFrame,可以直接生成一个独立的Frame
-          
+
     }
     private static CategoryDataset getDataSet() {
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(100, "总题数", "第一轮");
-        dataset.addValue(100, "正确数", "第一轮");
-        dataset.addValue(100, "广州", "第一轮");
+//        dataset.addValue(100, "总题数", "第一轮");
+//        dataset.addValue(100, "正确数", "第一轮");
+//        //dataset.addValue(100, "广州", "第一轮");
+//	   
+//	   dataset.addValue(200, "总题数", "第二轮");
+//	   dataset.addValue(200, "正确数", "第二轮");
+//	   //dataset.addValue(200, "广州", "第二轮");
+//	   
+//	   dataset.addValue(300, "总题数", "第三轮");
+//	   dataset.addValue(300, "正确数", "第三轮");
+//	   //dataset.addValue(300, "广州", "第三轮");
+//	   
+//	   dataset.addValue(400, "总题数", "第四轮");
+//	   dataset.addValue(400, "正确数", "第四轮");
+//	   //dataset.addValue(400, "广州", "第四轮");
+//	   
+//	   dataset.addValue(500, "总题数", "第五轮");
+//	   dataset.addValue(500, "正确数", "第五轮");
+//	   //dataset.addValue(500, "广州", "第五轮");
 	   
-	   dataset.addValue(200, "总题数", "第二轮");
-	   dataset.addValue(200, "正确数", "第二轮");
-	   dataset.addValue(200, "广州", "第二轮");
-	   
-	   dataset.addValue(300, "总题数", "第三轮");
-	   dataset.addValue(300, "正确数", "第三轮");
-	   dataset.addValue(300, "广州", "第三轮");
-	   
-	   dataset.addValue(400, "总题数", "第四轮");
-	   dataset.addValue(400, "正确数", "第四轮");
-	   dataset.addValue(400, "广州", "第四轮");
-	   
-	   dataset.addValue(500, "总题数", "第五轮");
-	   dataset.addValue(500, "正确数", "第五轮");
-	   dataset.addValue(500, "广州", "第五轮");
+	   ArrayList<String> score=new ArrayList<String>();
+	   String[] data=new String[2];
+	   score=doFile.readLastNLine("./static.txt",5);
+	   Collections.reverse(score);
+	   int count=1;
+	   for(String st:score){
+		   data=strPro.StrSplitScore(st);
+		   dataset.addValue(Integer.parseInt(data[1]), "总题数", "第"+count+"轮");
+		   dataset.addValue(Integer.parseInt(data[0]), "正确数", "第"+count+"轮");
+		   count++;
+	   }
        return dataset;
     }
 	public ChartPanel getChartPanel(){
