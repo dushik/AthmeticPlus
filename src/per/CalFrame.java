@@ -7,9 +7,6 @@ import java.awt.*;
  *
  */
 class CalFrame extends JFrame{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	Toolkit kit=Toolkit.getDefaultToolkit();

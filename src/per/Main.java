@@ -1,18 +1,14 @@
 package per;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +28,6 @@ import org.jfree.chart.ChartPanel;
  */
 public class Main{
 	private static ArrayList<String> arithExpress =new ArrayList<String>();
-	private static ArrayList<HashMap> list=new ArrayList<HashMap>();
 	private static HashMap<Integer, String> resHm=new HashMap<Integer, String>();
 	private static HashMap<Integer, String> ansHm=new HashMap<Integer, String>();
 	private static int index=0;
@@ -43,8 +38,8 @@ public class Main{
 			public void run(){
 				CalFrame frame=new CalFrame();
 				DoFile doFile=new DoFile();
-				Generate g=new Generate();
 				StrPro strPro=new StrPro();
+				Expression expression=new Expression();
 				arithExpress=doFile.ReadFromFile("./ArithmeticExpression.txt");//默认从当前目录读取题库
 				
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,18 +78,18 @@ public class Main{
 		        rightPanel.setLayout(null);
 		        
 		        JLabel arithLabel=new JLabel("点击开始答题按钮,开始答题");
-		        arithLabel.setBounds(30,80,200,50);
+		        arithLabel.setBounds(30,80,250,50);
 		        arithLabel.setFont(new Font(null, Font.PLAIN, 20));
 		        JLabel helloLabel=new JLabel("请仔细查看算式后得出计算结果!");
 		        helloLabel.setBounds(20,10,500,50);
 		        helloLabel.setFont(new Font(null, Font.PLAIN, 20));
 		     
 		        JTextField textField = new JTextField(8);
-		        textField.setBounds(280, 80, 200, 40);
+		        textField.setBounds(330, 80, 200, 40);
 		        textField.setFont(new Font(null, Font.PLAIN, 20));
 		        JButton btn = new JButton("确定");
 		        btn.setFont(new Font(null, Font.PLAIN, 20));
-		        btn.setBounds(290, 160, 180, 40);
+		        btn.setBounds(340, 160, 180, 40);
 		        
 		        rightPanel.add(helloLabel);
 		        rightPanel.add(arithLabel);
@@ -116,7 +111,7 @@ public class Main{
 		        panel.add(msgTextArea);
 		        
 		        //MenuBar组件部分
-		        JMenuItem newMenuItem = new JMenuItem("上一次测试成绩分析");
+		        JMenuItem newMenuItem = new JMenuItem("最近测试成绩分析");
 		        JMenuItem openMenuItem = new JMenuItem("打开题库");
 		        JMenuItem generateMenuItem = new JMenuItem("生成题库");
 		        JMenuItem exitMenuItem = new JMenuItem("退出");
@@ -184,11 +179,10 @@ public class Main{
 		        generateMenuItem.addActionListener(new ActionListener() {
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
-		            	char flag='a';
+		            	char flag='a';//默认普通算式
 		                if(radioButtonMenuItem01.isSelected()){flag='a';}
 		                if(radioButtonMenuItem02.isSelected()){flag='b';}
 		                if(radioButtonMenuItem03.isSelected()){flag='c';}
-	                    // 显示输入对话框, 返回输入的内容
 	                    String inputContent = JOptionPane.showInputDialog(
 	                            frame,
 	                            "输入题目的数量:"
@@ -197,17 +191,25 @@ public class Main{
 	                    	textArea.append("取消生成\n");
 	                    }
 	                    else{
-	                    	//flag，inputContent
-		                    g.generate();//接受两个参数去生成，返回运算式List
-		                    arithExpress=doFile.ReadFromFile("./ArithmeticExpression.txt");
-		                    JOptionPane.showMessageDialog(
-		                            frame,
-		                            "新的题库已生成,可以开始答题",
-		                            "消息标题",
-		                            JOptionPane.INFORMATION_MESSAGE
-		                    );
+	                    	if(judge(Float.parseFloat(inputContent))){
+		                    	switch(flag){
+		                    	case 'a':
+		                    		expression.generateExpressionA(Integer.parseInt(inputContent));
+		                    		break;
+		                    	case 'b':
+		                    		expression.generateExpressionB(Integer.parseInt(inputContent));
+		                    		break;
+		                    	case 'c':
+		                    		expression.generateExpressionC(Integer.parseInt(inputContent));
+		                    		break;
+		                    	}
+				                arithExpress=doFile.ReadFromFile("./ArithmeticExpression.txt");
+			                    JOptionPane.showMessageDialog(frame,"新的题库已生成,可以开始答题","消息标题",JOptionPane.INFORMATION_MESSAGE);
+	                    	}else{
+	                    		JOptionPane.showMessageDialog(frame,"输入非法参数","消息标题",JOptionPane.WARNING_MESSAGE);
+	                    	}
 	                    }
-		            }
+	                }
 		        });
 		        newMenuItem.addActionListener(new ActionListener() {
 		            @Override
@@ -228,7 +230,6 @@ public class Main{
 		                if(result==0){
 		                	System.exit(0); 
 		                }
-		                System.out.println("选择结果: " + result);
 		            }
 		        });
 		        aboutMenuItem.addActionListener(new ActionListener() {
@@ -246,7 +247,7 @@ public class Main{
 		        radioButtonMenuItem01.addChangeListener(new ChangeListener() {
 		            @Override
 		            public void stateChanged(ChangeEvent e) {
-		                System.out.println("单选按钮01 是否被选中: " + radioButtonMenuItem01.isSelected());
+		                //System.out.println("单选按钮01 是否被选中: " + radioButtonMenuItem01.isSelected());
 		            }
 		        });
 		        
@@ -266,16 +267,7 @@ public class Main{
 		            	}
 		            	else{
 		            		index=0;
-		            		arithLabel.setText(strPro.StrSplitBefore(arithExpress.get(index)));
-//		                    try {    
-//		                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());    
-//		                    } catch (Exception ex) {    
-//		                        ex.printStackTrace();    
-//		                    }    
-//		                 
-//		                    CountDown cframe = new CountDown("计时器");    
-//		                    cframe.pack();    
-//		                    cframe.setVisible(true);    
+		            		arithLabel.setText(strPro.StrSplitBefore(arithExpress.get(index)));   
 		            	}
 		            }
 		        });
@@ -392,9 +384,19 @@ public class Main{
 		            	}
 		            }
 		        });
-		        for(String st:arithExpress){
-		        	textArea.append(st+"\n");
-		        }
+		        textArea.append("你好，小朋友!\n点击开始答题进行测试\n");
+//		        for(String st:arithExpress){
+//		        	textArea.append(st+"\n");
+//		        }
+                try {    
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());    
+                } catch (Exception ex) {    
+                    ex.printStackTrace();    
+                }    
+             
+                CountDown cframe = new CountDown("计时器");    
+                cframe.pack();    
+                cframe.setVisible(true); 
 			}
 		});
 	}
@@ -455,5 +457,24 @@ public class Main{
         ChartPanel p=barChart.getChartPanel();
         sframe.add(p);
 	}
+
+	/**
+	 * 判断输入参数是否合法
+	 * @param data
+	 * @return
+	 */
+	private static boolean judge(float data){
+		if(data>=0){
+			int temp=(int)data;
+			if(temp==data)
+				return true;
+			else
+				return false;
+		}
+		else{
+			return false;
+		}
+	}	
+	
 }
 

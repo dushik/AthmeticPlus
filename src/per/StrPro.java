@@ -4,6 +4,7 @@ package per;
  *
  */
 public class StrPro {
+	
 	/**
 	 * 分割字符串“=”前面的内容
 	 * @param string
@@ -21,12 +22,32 @@ public class StrPro {
 		String temp[]=string.split("\\=");
 		return temp[1];
 	}
+	
 	/**
-	 * 分割字符串“-”前面的内容
+	 * 分割字符串“-”得到前面的内容
 	 * @param string
 	 */
 	public String[] StrSplitScore(String string){
-		String temp[]=string.split("\\-");
-		return temp;
+		return string.split("\\-");
+	}
+	
+	/**
+	 * 分割字符串得到“-”前面的内容
+	 * @param string
+	 */
+	public String StrMinus(String string){
+		System.out.println(string);
+		System.out.println(string.substring(0, string.lastIndexOf("-")));
+		return string.substring(0, string.lastIndexOf("-"));
+	}
+	
+	/**
+	 * 分割字符串得到“/”前面的内容
+	 * @param string
+	 */
+	public String StrDivision(String string){
+		System.out.println(string);
+		System.out.println(string.substring(0, string.lastIndexOf("/")));
+		return string.substring(0, string.lastIndexOf("/"));
 	}
 }

@@ -53,30 +53,10 @@ public class BarChart {
     }
     private static CategoryDataset getDataSet() {
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//        dataset.addValue(100, "总题数", "第一轮");
-//        dataset.addValue(100, "正确数", "第一轮");
-//        //dataset.addValue(100, "广州", "第一轮");
-//	   
-//	   dataset.addValue(200, "总题数", "第二轮");
-//	   dataset.addValue(200, "正确数", "第二轮");
-//	   //dataset.addValue(200, "广州", "第二轮");
-//	   
-//	   dataset.addValue(300, "总题数", "第三轮");
-//	   dataset.addValue(300, "正确数", "第三轮");
-//	   //dataset.addValue(300, "广州", "第三轮");
-//	   
-//	   dataset.addValue(400, "总题数", "第四轮");
-//	   dataset.addValue(400, "正确数", "第四轮");
-//	   //dataset.addValue(400, "广州", "第四轮");
-//	   
-//	   dataset.addValue(500, "总题数", "第五轮");
-//	   dataset.addValue(500, "正确数", "第五轮");
-//	   //dataset.addValue(500, "广州", "第五轮");
-	   
 	   ArrayList<String> score=new ArrayList<String>();
 	   String[] data=new String[2];
 	   score=doFile.readLastNLine("./static.txt",5);
-	   Collections.reverse(score);
+	   if(!score.isEmpty())Collections.reverse(score);
 	   int count=1;
 	   for(String st:score){
 		   data=strPro.StrSplitScore(st);

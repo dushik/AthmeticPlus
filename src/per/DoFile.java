@@ -34,7 +34,6 @@ public class DoFile {
         }
 		return tempList;
 	}
-	
     /** 
      * 读取文件最后N行  
      * 根据换行符判断当前的行数， 
@@ -92,28 +91,28 @@ public class DoFile {
         }  
         return result;  
     }  
-//	/**
-//	 * 
-//	 * @param path
-//	 * @param content
-//	 */
-//	public void WriteToFile(String path,ArrayList<Integer> content)
-//	{
-//		try {
-//            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-//            for(Integer con:content){
-//                bw.write(con);  
-//                bw.newLine();
-//            }
-//            bw.close();
-//        } catch (IOException e1) {
-//            // TODO Auto-generated catch block
-//            e1.printStackTrace();
-//        }
-//	}
-	
+    /**
+     * 生成的题库按行写入文件
+     * @param path
+     * @param content
+     */
+	public void WriteToFile(String path,ArrayList<String> content)
+	{
+		try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            for(String con:content){
+                bw.write(con);  
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+	}
+
     /** 
-     * 追加文件：使用FileWriter 
+     * 追加文件：使用FileWriter 存储成绩
      */  
     public void appendFile(String path, ArrayList<Integer> content) {  
         try {  
