@@ -21,35 +21,6 @@ public class Expression {
 		DoFile doFile=new DoFile();
 		
 		/**
-		 * 生成运算结果非负，非小数的运算式没有结果
-		 * @param num 题目数量
-		 */
-		public ArrayList<String> generateExpression(int num){
-			char[] operator=new char[]{'+','-','*','/'};
-			ArrayList<String> expression=new ArrayList<String>();
-			for(int i=0;i<num;i++){
-				int n=random.nextInt(3)+3; //3-5个运算符
-				int[] number=new int[n+1];
-				for(int j=0;j<=n;j++){
-					number[j]=random.nextInt(100)+1; //4-5个数字
-				} 
-				String ex=new String();
-				for(int j=0;j<n;j++){
-					int s=random.nextInt(4);//随机选择某个运算符
-					ex+=String.valueOf(number[j])+String.valueOf(operator[s]);///5+4/
-				}
-				ex+=String.valueOf(number[n]);
-				float result=calculate.calrp(calculate.getrp(ex));
-				if(decideNegDiv(result)){
-					expression.add(ex);
-				}else{
-					i--;
-				}
-			}
-			return expression;
-		}
-		
-		/**
 		 * 生成运算结果非负，非小数的运算式
 		 * @param num 题目数量
 		 */

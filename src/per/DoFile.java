@@ -34,6 +34,7 @@ public class DoFile {
         }
 		return tempList;
 	}
+	
     /** 
      * 读取文件最后N行  
      * 根据换行符判断当前的行数， 
